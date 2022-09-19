@@ -34,8 +34,11 @@
             this.numericMiliseconds = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.numericSeed = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUniverse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericMiliseconds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericSeed)).BeginInit();
             this.SuspendLayout();
             // 
             // OK
@@ -125,6 +128,37 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Miliseconds: ";
             // 
+            // numericSeed
+            // 
+            this.numericSeed.Location = new System.Drawing.Point(137, 113);
+            this.numericSeed.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.numericSeed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericSeed.Name = "numericSeed";
+            this.numericSeed.Size = new System.Drawing.Size(120, 20);
+            this.numericSeed.TabIndex = 6;
+            this.numericSeed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(67, 115);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Seed: ";
+            // 
             // ModalDialog
             // 
             this.AcceptButton = this.OK;
@@ -132,6 +166,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
             this.ClientSize = new System.Drawing.Size(381, 179);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.numericSeed);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericMiliseconds);
@@ -146,6 +182,7 @@
             this.Text = "Settings";
             ((System.ComponentModel.ISupportInitialize)(this.numericUniverse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericMiliseconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericSeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,5 +196,7 @@
         private System.Windows.Forms.NumericUpDown numericMiliseconds;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericSeed;
+        private System.Windows.Forms.Label label3;
     }
 }

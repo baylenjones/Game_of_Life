@@ -13,10 +13,10 @@ namespace Game_of_Life
 {
     public partial class Form1 : Form
     {
-        // Views
+        // View Controls
         bool ViewNeighbors = false;
         bool ViewGrid = true;
-        bool ViewHUD = false;
+        bool ViewHUD = true;
         bool ViewToro = true;
 
         // The universe array
@@ -26,7 +26,7 @@ namespace Game_of_Life
 
         // Drawing colors
         Color gridColor = Color.Gray;
-        Color cellColor = Color.Gray;
+        Color cellColor = Color.Aquamarine;
 
         // The Timer class
         Timer timer = new Timer();
@@ -34,6 +34,7 @@ namespace Game_of_Life
         // intervals count
         int generations = 0;
         int livingCells = 0;
+        int Seed = 1776;
 
         public Form1()
         {
@@ -95,8 +96,8 @@ namespace Game_of_Life
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
-            float cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-            float cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+            float cellWidth = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+            float cellHeight = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
             Pen gridPen = new Pen(gridColor, 1);
 
             Brush cellBrush = new SolidBrush(cellColor);
@@ -115,6 +116,7 @@ namespace Game_of_Life
                     {
                         e.Graphics.FillRectangle(cellBrush, cellRect);
                     }
+                    // View Grid toggle
                     if(ViewGrid == true) { e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height); }
                 }
             }
@@ -122,20 +124,35 @@ namespace Game_of_Life
             gridPen.Dispose();
             cellBrush.Dispose();
 
-            if(ViewNeighbors == true)
+            if(ViewNeighbors == true)  // View Neighbors Counts toggle
             {
-                Font font = new Font("Arial", 20f);
+                Font font = new Font("Arial", 10f);
 
                 StringFormat stringFormat = new StringFormat();
                 stringFormat.Alignment = StringAlignment.Center;
                 stringFormat.LineAlignment = StringAlignment.Center;
 
-                Rectangle rect = new Rectangle(0, 0, 100, 100);
-                int neighbors = 8;
-
-                e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, rect, stringFormat);
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    for (int x = 0; x < universe.GetLength(0); x++)
+                    {
+                        int neighbors = CountNeighborsToroidal(x, y);
+                        RectangleF rect = new RectangleF(x, y, cellWidth, cellHeight);
+                        rect.X = x * cellWidth;
+                        rect.Y = y * cellHeight;
+                        rect.Width = cellWidth;
+                        rect.Height = cellHeight;
+                        if(neighbors != 0) { e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, rect, stringFormat); }
+                    }
+                }
             }
-            
+
+            if(ViewHUD == true) // View HUD
+            {
+                Font font = new Font("Arial", 10f,FontStyle.Bold);
+
+                e.Graphics.DrawString($"Generations: {generations}\nLiving Count: {livingCells}\nTorodial: {ViewToro}\nUniverse Size: {universe.GetLength(1)}", font, Brushes.Green, 0, 0);
+            }
         }
 
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -225,18 +242,34 @@ namespace Game_of_Life
             }
             return count;
         }
-
-
-        // Randomize
+        // Randomize by Time
         private void Randomize_Click(object sender, EventArgs e)
         {
-            Random rand = new Random();
+            Random rng = new Random(DateTime.Now.Second);
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
                 {
-                    int test = rand.Next(0, 6);
+                    int test = rng.Next(10);
                     if((test % 2) == 0) { universe[x, y] = true; }
+                    else { universe[x, y] = false; }
+                }
+            }
+            generations = 0;
+            livingCells = CountLivingCells();
+            LivingCells.Text = "Living Cells = " + livingCells.ToString();
+            graphicsPanel1.Invalidate();
+        }
+        // Randomize By Seed
+        private void RandomizeSeed_Click(object sender, EventArgs e)
+        {
+            Random rng = new Random(Seed);
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    int test = rng.Next(10);
+                    if ((test % 2) == 0) { universe[x, y] = true; }
                     else { universe[x, y] = false; }
                 }
             }
@@ -350,6 +383,10 @@ namespace Game_of_Life
                 if(timer.Interval != dlg.Miliseconds)
                 {
                     timer.Interval = dlg.Miliseconds;
+                }
+                if(Seed != dlg.Seed)
+                {
+                    Seed = dlg.Seed;
                 }
                 graphicsPanel1.Invalidate();
             }
@@ -505,5 +542,7 @@ namespace Game_of_Life
             torodialToolStripMenuItem.Checked = !torodialToolStripMenuItem.Checked;
             graphicsPanel1.Invalidate();
         }
+
+        
     }
 }

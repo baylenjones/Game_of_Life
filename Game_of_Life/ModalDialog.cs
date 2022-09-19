@@ -28,5 +28,11 @@ namespace Game_of_Life
             get { return (int)numericMiliseconds.Value; }
             set { numericMiliseconds.Value = value; }
         }
+
+        public int Seed
+        {
+            get { return (int)numericSeed.Value; }
+            set { numericSeed.Value = value; }
+        }
     }
 }
