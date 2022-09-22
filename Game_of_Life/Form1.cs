@@ -150,7 +150,7 @@ namespace Game_of_Life
             if(ViewHUD == true) // View HUD
             {
                 Font font = new Font("Arial", 10f,FontStyle.Bold);
-
+                
                 e.Graphics.DrawString($"Generations: {generations}\nLiving Count: {livingCells}\nTorodial: {ViewToro}\nUniverse Size: {universe.GetLength(1)}", font, Brushes.Green, 0, 0);
             }
         }
@@ -159,8 +159,8 @@ namespace Game_of_Life
         {
             if (e.Button == MouseButtons.Left)
             {
-                float cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-                float cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+                float cellWidth = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+                float cellHeight = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
                 float x = e.X / cellWidth;
                 float y = e.Y / cellHeight;
